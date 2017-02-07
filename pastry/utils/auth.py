@@ -1,7 +1,7 @@
 import json
 from base64 import b64encode
 from hashlib import sha1
-from datetime import datetime, timedelta
+from datetime import datetime
 from .pastry_rsa import sign
 
 
@@ -19,7 +19,7 @@ def hashencode(content):
 
 def encode(hashed):
     based = b64encode(hashed)
-    return [based[i:i+60].decode() for i in range(0, len(based), 60)]
+    return [based[i:i + 60].decode() for i in range(0, len(based), 60)]
 
 
 def authorization_headers(keypath, canonical_source):
@@ -27,7 +27,7 @@ def authorization_headers(keypath, canonical_source):
         signature = sign(canonical_source.encode(), keyfile.read())
     parts = encode(signature)
     return {
-        'X-ops-authorization-%s' % (i+1): val for i, val in enumerate(parts)
+        'X-ops-authorization-%s' % (i + 1): val for i, val in enumerate(parts)
     }
 
 
@@ -47,7 +47,7 @@ def signed_headers(client, keypath, server, path, method='GET', data=None):
         'X-ops-userid': client,
         'X-ops-timestamp': timestamp,
         'X-ops-content-hash': hashed_body,
-        'X-chef-version': '0.10.8'
+        'X-chef-version': '12.8.0'
     }
     headers.update(authorization_headers(keypath, canonical_source))
     return headers

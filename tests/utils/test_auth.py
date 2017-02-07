@@ -38,3 +38,28 @@ class AuthTestCase(unittest.TestCase):
                 auth.authorization_headers('keypath', 'canonical_source'),
                 expected_result
             )
+
+    @mock.patch('pastry.utils.auth.authorization_headers', return_value={'auth':'headers'})
+    @mock.patch('pastry.utils.auth.hashencode', return_value=['encoded'])
+    @mock.patch('pastry.utils.auth.datetime')
+    @mock.patch('pastry.utils.auth.json')
+    def test_signed_headers(self, json, datetime, hashencode, authorization_headers):
+        now = mock.MagicMock()
+        now.strftime.return_value = 'timestamp'
+        datetime.utcnow.return_value = now
+        expected = {
+            'Accept': 'application/json',
+            'X-chef-version': '12.8.0',
+            'X-ops-content-hash': 'encoded',
+            'X-ops-sign': 'version=1.0',
+            'X-ops-timestamp': 'timestamp',
+            'X-ops-userid': 'client',
+            'auth': 'headers'
+        }
+        auth.signed_headers('client', 'keypath', 'server', 'path')
+        json.dumps.assert_not_called()
+        self.assertEqual(
+            auth.signed_headers('client', 'keypath', 'server', 'path', data='data'),
+            expected
+        )
+        json.dumps.assert_called_with('data')

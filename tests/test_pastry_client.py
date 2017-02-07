@@ -21,7 +21,26 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual(PastryClient._keypath, 'keypath')
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
-    def test_get_url(self, init):
+    @mock.patch('pastry.pastry_client.os')
+    @mock.patch('pastry.pastry_client.yaml')
+    def test_load_config(self, yaml, os, initialize):
+        os.path.join.return_value = 'config_path'
+        os.path.exists.return_value = True
+        yaml.safe_load.return_value = {
+            'server': 'server',
+            'organization': 'organization',
+            'client': 'client',
+            'keypath': 'keypath'
+        }
+        with mock.patch('pastry.pastry_client.open', mock.mock_open(read_data='config')):
+            PastryClient.load_config()
+            initialize.assert_called_with(
+                'server', 'organization', 'client', 'keypath')
+        os.path.exists.return_value = False
+        self.assertRaises(ValueError, PastryClient.load_config)
+
+    @mock.patch('pastry.pastry_client.PastryClient.load_config')
+    def test_get_url(self, load_config):
         self.assertEqual((None, 'endpoint'), PastryClient.get_url('endpoint'))
 
     @mock.patch('pastry.pastry_client.requests')

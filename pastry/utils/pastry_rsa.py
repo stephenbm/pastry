@@ -1,5 +1,6 @@
 import rsa
 
+
 def sign(message, raw_key):
     priv_key = rsa.PrivateKey.load_pkcs1(raw_key)
     keylength = rsa.common.byte_size(priv_key.n)

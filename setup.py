@@ -22,7 +22,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 install_requires = [
-    'rsa'
+    'rsa',
     'requests'
 ]
 

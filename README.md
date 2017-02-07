@@ -6,4 +6,4 @@ Pastry
 
 A simple chef api wrapper
 
-documentation still incomplete
+documentation still incomplete!
