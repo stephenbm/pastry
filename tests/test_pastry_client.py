@@ -32,7 +32,7 @@ class PastryClientTestCase(unittest.TestCase):
             'client': 'client',
             'keypath': 'keypath'
         }
-        with mock.patch('pastry.pastry_client.open', mock.mock_open(read_data='config')):
+        with mock.patch('__builtin__.open', mock.mock_open(read_data='config')):
             PastryClient.load_config()
             initialize.assert_called_with(
                 'server', 'organization', 'client', 'keypath')

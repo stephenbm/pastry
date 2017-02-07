@@ -23,6 +23,7 @@ class PyTest(TestCommand):
 
 install_requires = [
     'rsa',
+    'pyyaml',
     'requests'
 ]
 

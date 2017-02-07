@@ -33,7 +33,7 @@ class AuthTestCase(unittest.TestCase):
             'X-ops-authorization-2': 'part2',
             'X-ops-authorization-3': 'part3'
         }
-        with mock.patch('pastry.utils.auth.open', mock.mock_open(read_data='key')):
+        with mock.patch('__builtin__.open', mock.mock_open(read_data='key')):
             self.assertEqual(
                 auth.authorization_headers('keypath', 'canonical_source'),
                 expected_result
