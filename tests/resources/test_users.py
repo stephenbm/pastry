@@ -1,4 +1,3 @@
-import mock
 import unittest
 
 from pastry.resources.users import Users

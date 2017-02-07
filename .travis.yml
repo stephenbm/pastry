@@ -4,3 +4,7 @@ python:
   - 2.7
 install: pip install -e .
 script:  python setup.py test -a '--cov=pastry'
+after_success:
+  - coverage xml
+  - pip install codacy-coverage
+  - python-codacy-coverage -r coverage.xml
