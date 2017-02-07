@@ -11,8 +11,8 @@ Pastry
     :target: https://www.codacy.com/app/steve-bm/pastry?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=stephenbm/pastry&amp;utm_campaign=Badge_Coverage   
 
 .. image:: https://readthedocs.org/projects/pastry/badge/?version=latest
-    :target: http://pastry.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+    :target: http://pastry.readthedocs.io/en/latest/?badge=latest
  
 A simple chef api wrapper
 
