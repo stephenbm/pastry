@@ -56,10 +56,10 @@ class AuthTestCase(unittest.TestCase):
             'X-ops-userid': 'client',
             'auth': 'headers'
         }
-        auth.signed_headers('client', 'keypath', 'server', 'path')
+        auth.signed_headers('client', 'keypath', 'path')
         json.dumps.assert_not_called()
         self.assertEqual(
-            auth.signed_headers('client', 'keypath', 'server', 'path', data='data'),
+            auth.signed_headers('client', 'keypath', 'path', data='data'),
             expected
         )
         json.dumps.assert_called_with('data')

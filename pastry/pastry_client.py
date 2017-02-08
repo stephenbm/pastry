@@ -101,7 +101,7 @@ class PastryClient(object):
         '''
         server, path = cls.get_url(endpoint)
         headers = signed_headers(
-            cls._client, cls._keypath, server, path, method=method, data=data)
+            cls._client, cls._keypath, path, method=method, data=data)
         resp = requests.get(
             '%s%s' % (server, path), headers=headers, verify=cls.verify)
         return resp.json

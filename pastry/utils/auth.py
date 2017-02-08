@@ -31,7 +31,7 @@ def authorization_headers(keypath, canonical_source):
     }
 
 
-def signed_headers(client, keypath, server, path, method='GET', data=None):
+def signed_headers(client, keypath, path, method='GET', data=None):
     hashed_path = ''.join(hashencode(path))
     body = ''
     if data:
