@@ -7,10 +7,11 @@ Welcome to pastry's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-
+    :caption: Table of Contents
+    :name: mastertoc
+    :maxdepth: 2
+ 
+    users.rst
 
 Indices and tables
 ==================
