@@ -1,3 +1,5 @@
+.. module:: pastry.resources.users
+
 Users
 =====
 
@@ -19,3 +21,7 @@ API Reference
 -------------
 
 .. _server admins documentation: https://docs.chef.io/ctl_chef_server.html#server-admins
+
+
+.. autoclass:: Users
+   :members:
