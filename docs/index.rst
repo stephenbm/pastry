@@ -11,6 +11,7 @@ Welcome to pastry's documentation!
     :name: mastertoc
     :maxdepth: 2
  
+    pastry_client.rst
     users.rst
 
 Indices and tables

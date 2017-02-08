@@ -26,4 +26,4 @@ API Reference
 
 
 .. autoclass:: Users
-   :members:
+   :members: index, get
