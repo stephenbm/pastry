@@ -16,3 +16,15 @@ class Users(Base):
         :rtype: hash
         '''
         return super(Users, cls).index()
+
+    @classmethod
+    def get(cls, username):
+        '''
+        Fetches a user from the chef server
+
+        :param username: The User's username
+        :type username: string
+        :return: The chef user
+        :rtype: hash
+        '''
+        return super(Users, cls).get(username)

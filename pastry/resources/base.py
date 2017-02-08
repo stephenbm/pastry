@@ -13,3 +13,7 @@ class Base(object):
     @classmethod
     def index(cls):
         return PastryClient.call(cls.base_url())
+
+    @classmethod
+    def get(cls, instanceid):
+        return PastryClient.call('%s/%s' % (cls.base_url(), instanceid))
