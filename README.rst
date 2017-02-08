@@ -16,4 +16,8 @@ Pastry
 
 A simple chef api wrapper
 
-documentation still incomplete!
+This project is still in development and is not intended to be used yet
+
+For more info, please visit the `documentation`_
+
+.. _documentation: http://pastry.readthedocs.io/en/latest/
