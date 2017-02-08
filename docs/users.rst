@@ -11,11 +11,13 @@ chef server admins can be found in the chef `server admins documentation`_.
 Supported Operations
 --------------------
 
-    ========= ==========================
-    `All`_    A list of all of the users
-    ========= ==========================
+    ========= =================================
+    `Index`_  Fetch a list of all of the users
+    `Get`_    Lookup user info
+    ========= =================================
 
-    .. _All: #get--users
+    .. _Index: #pastry.resources.users.Users.index
+    .. _Get:   #pastry.resources.users.Users.get
 
 API Reference
 -------------

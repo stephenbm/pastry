@@ -14,6 +14,12 @@ class BaseTestCase(unittest.TestCase):
 
     @mock.patch('pastry.resources.base.Base.base_url')
     @mock.patch('pastry.resources.base.PastryClient')
-    def test_all(self, pastry_client, base_url):
+    def test_index(self, pastry_client, base_url):
         pastry_client.call.return_value = 'result'
         self.assertEqual(Base.index(), 'result')
+
+    @mock.patch('pastry.resources.base.Base.base_url')
+    @mock.patch('pastry.resources.base.PastryClient')
+    def test_get(self, pastry_client, base_url):
+        pastry_client.call.return_value = 'result'
+        self.assertEqual(Base.get('instance'), 'result')
