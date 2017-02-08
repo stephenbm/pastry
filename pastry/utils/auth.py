@@ -41,7 +41,13 @@ def signed_headers(client, keypath, path, method='GET', data=None):
     hashed_body = '\n'.join(hashencode(body))
     timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    canonical_source = CANONICAL % locals()
+    canonical_source = CANONICAL % {
+        'method': method,
+        'hashed_path': hashed_path,
+        'hashed_body': hashed_body,
+        'timestamp': timestamp,
+        'client': client
+    }
 
     headers = {
         'Accept': 'application/json',
