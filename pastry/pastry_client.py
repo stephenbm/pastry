@@ -1,3 +1,5 @@
+'''pastry_client handles the interaction with the chef server api'''
+
 import os
 import yaml
 import requests
@@ -75,7 +77,7 @@ class PastryClient(object):
     def get_url(cls, endpoint):
         '''
         Fetches the server and updates the endpoint with the organization
-        
+
         :param endpoint: The endpoint being called on the chef server
         :type endpoint: string
         :return: The server url and updated endpoint

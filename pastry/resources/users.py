@@ -1,3 +1,5 @@
+'''users provides the methods for chef user resources'''
+
 from .base import Base
 
 

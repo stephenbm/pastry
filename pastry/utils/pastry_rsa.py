@@ -1,3 +1,5 @@
+'''pastry_rsa provides a signing method that works with openssl rsautl'''
+
 import rsa
 
 

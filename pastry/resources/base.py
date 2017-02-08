@@ -1,3 +1,6 @@
+'''base is a class that resources inherit from to provide common http
+methods'''
+
 from pastry.pastry_client import PastryClient
 
 

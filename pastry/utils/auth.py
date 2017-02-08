@@ -1,3 +1,5 @@
+'''auth provides helper methods for setting up the headers required by chef'''
+
 import json
 from base64 import b64encode
 from hashlib import sha1
