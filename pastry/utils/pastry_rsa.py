@@ -4,6 +4,7 @@ import rsa
 
 
 def sign(message, raw_key):
+    '''sign a request the same way openssl rsautl would'''
     priv_key = rsa.PrivateKey.load_pkcs1(raw_key)
     keylength = rsa.common.byte_size(priv_key.n)
     padded = rsa.pkcs1._pad_for_signing(message, keylength)
