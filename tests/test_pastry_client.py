@@ -49,5 +49,12 @@ class PastryClientTestCase(unittest.TestCase):
     def test_call(self, get_url, signed_headers, methods):
         get_url.return_value = ('server', 'path')
         signed_headers.return_value = 'headers'
+        response = mock.MagicMock()
+        response.ok = True
+        methods['GET'].return_value = response
         PastryClient.call('endpoint')
-        methods['GET'].assert_called_with('serverpath', headers='headers', data=None, verify=PastryClient.verify)
+        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        PastryClient.call('endpoint', method='POST', data={'key': 'value'})
+        methods['POST'].assert_called_with('serverpath', headers='headers', json={'key': 'value'}, verify=PastryClient.verify)
+        response.ok = False
+        self.assertRaises(Exception, PastryClient.call, 'endpoint')

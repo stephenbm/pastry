@@ -9,7 +9,8 @@ from pastry.utils.auth import signed_headers
 HTTP_METHODS = {
     'GET': requests.get,
     'POST': requests.post,
-    'PUT': requests.put
+    'PUT': requests.put,
+    'DELETE': requests.delete
 }
 
 
@@ -108,12 +109,14 @@ class PastryClient(object):
         :rtype: hash
         '''
         server, path = cls.get_url(endpoint)
-        headers = signed_headers(
-            cls._client, cls._keypath, path, method=method, data=data)
-        resp = HTTP_METHODS[method](
-            '%s%s' % (server, path),
-            headers=headers,
-            verify=cls.verify,
-            data=data
-        )
-        return resp.json
+        kwargs = {
+            'headers': signed_headers(
+                cls._client, cls._keypath, path, method=method, data=data),
+            'verify': cls.verify
+        }
+        if data:
+            kwargs['json'] = data
+        resp = HTTP_METHODS[method]('%s%s' % (server, path), **kwargs)
+        if not resp.ok:
+            raise Exception('%s: %s' % (resp.status_code, resp.text))
+        return resp.json()

@@ -54,3 +54,15 @@ class Users(Base):
         :rtype: hash
         '''
         return super(Users, cls).create(user)
+
+    @classmethod
+    def delete(cls, username):
+        '''
+        Deletes a user from the chef server
+
+        :param username: The User's username
+        :type usename: string
+        :return: The deleted user's name
+        :rtype: hash
+        '''
+        return super(Users, cls).delete(username)

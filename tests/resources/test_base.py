@@ -32,3 +32,10 @@ class BaseTestCase(unittest.TestCase):
         pastry_client.call.return_value = 'result'
         self.assertEqual(Base.create({}), 'result')
         pastry_client.call.assert_called_with('url', method='POST', data={})
+
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
+    @mock.patch('pastry.resources.base.PastryClient')
+    def test_delete(self, pastry_client, base_url):
+        pastry_client.call.return_value = 'result'
+        self.assertEqual(Base.delete('instanceid'), 'result')
+        pastry_client.call.assert_called_with('url/instanceid', method='DELETE')

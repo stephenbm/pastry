@@ -41,3 +41,11 @@ class Base(object):
         '''
         return PastryClient.call(
             '%s' % cls.base_url(), method='POST', data=instance)
+
+    @classmethod
+    def delete(cls, instanceid):
+        '''
+        Delete an instance
+        '''
+        return PastryClient.call(
+            '%s/%s' % (cls.base_url(), instanceid), method='DELETE')
