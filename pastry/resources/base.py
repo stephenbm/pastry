@@ -33,3 +33,11 @@ class Base(object):
         Fetch a specific instance of a resource
         '''
         return PastryClient.call('%s/%s' % (cls.base_url(), instanceid))
+
+    @classmethod
+    def create(cls, instance):
+        '''
+        Create a new instance
+        '''
+        return PastryClient.call(
+            '%s' % cls.base_url(), method='POST', data=instance)

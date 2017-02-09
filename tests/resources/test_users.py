@@ -13,3 +13,7 @@ class UsersTestCase(unittest.TestCase):
     @mock.patch('pastry.resources.users.Base.get', return_value='user')
     def test_get(self, base):
         self.assertEqual(Users.get('username'), 'user')
+
+    @mock.patch('pastry.resources.users.Base.create', return_value='user')
+    def test_create(self, base):
+        self.assertEqual(Users.create({}), 'user')

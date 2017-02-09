@@ -12,14 +12,23 @@ class BaseTestCase(unittest.TestCase):
         Base._base_url = None
         self.assertRaises(ValueError, Base.base_url)
 
-    @mock.patch('pastry.resources.base.Base.base_url')
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
     @mock.patch('pastry.resources.base.PastryClient')
     def test_index(self, pastry_client, base_url):
         pastry_client.call.return_value = 'result'
         self.assertEqual(Base.index(), 'result')
+        pastry_client.call.assert_called_with('url')
 
-    @mock.patch('pastry.resources.base.Base.base_url')
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
     @mock.patch('pastry.resources.base.PastryClient')
     def test_get(self, pastry_client, base_url):
         pastry_client.call.return_value = 'result'
         self.assertEqual(Base.get('instance'), 'result')
+        pastry_client.call.assert_called_with('url/instance')
+
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
+    @mock.patch('pastry.resources.base.PastryClient')
+    def test_create(self, pastry_client, base_url):
+        pastry_client.call.return_value = 'result'
+        self.assertEqual(Base.create({}), 'result')
+        pastry_client.call.assert_called_with('url', method='POST', data={})

@@ -6,6 +6,12 @@ import requests
 
 from pastry.utils.auth import signed_headers
 
+HTTP_METHODS = {
+    'GET': requests.get,
+    'POST': requests.post,
+    'PUT': requests.put
+}
+
 
 class PastryClient(object):
     '''
@@ -104,6 +110,10 @@ class PastryClient(object):
         server, path = cls.get_url(endpoint)
         headers = signed_headers(
             cls._client, cls._keypath, path, method=method, data=data)
-        resp = requests.get(
-            '%s%s' % (server, path), headers=headers, verify=cls.verify)
+        resp = HTTP_METHODS[method](
+            '%s%s' % (server, path),
+            headers=headers,
+            verify=cls.verify,
+            data=data
+        )
         return resp.json

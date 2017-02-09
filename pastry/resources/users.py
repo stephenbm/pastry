@@ -30,3 +30,27 @@ class Users(Base):
         :rtype: hash
         '''
         return super(Users, cls).get(username)
+
+    @classmethod
+    def create(cls, user):
+        '''
+        Creates a new chef user on the server
+
+        The user hash should be in the form::
+
+            {
+                'username': <username>,
+                'display_name': <display_name>,
+                'first_name': <first name>,
+                'middle_name': <middle name>, # optional
+                'last_name': <last name>,
+                'email': <email>,
+                'password': <password>
+            }
+
+        :param user: The user to create
+        :type user: hash
+        :return: The username and url
+        :rtype: hash
+        '''
+        return super(Users, cls).create(user)

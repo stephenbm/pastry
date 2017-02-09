@@ -43,11 +43,11 @@ class PastryClientTestCase(unittest.TestCase):
     def test_get_url(self, load_config):
         self.assertEqual((None, 'endpoint'), PastryClient.get_url('endpoint'))
 
-    @mock.patch('pastry.pastry_client.requests')
+    @mock.patch('pastry.pastry_client.HTTP_METHODS')
     @mock.patch('pastry.pastry_client.signed_headers')
     @mock.patch('pastry.pastry_client.PastryClient.get_url')
-    def test_call(self, get_url, signed_headers, requests):
+    def test_call(self, get_url, signed_headers, methods):
         get_url.return_value = ('server', 'path')
         signed_headers.return_value = 'headers'
         PastryClient.call('endpoint')
-        requests.get.assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        methods['GET'].assert_called_with('serverpath', headers='headers', data=None, verify=PastryClient.verify)

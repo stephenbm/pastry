@@ -11,13 +11,15 @@ chef server admins can be found in the chef `server admins documentation`_.
 Supported Operations
 --------------------
 
-    ========= =================================
-    `Index`_  Fetch a list of all of the users
-    `Get`_    Lookup user info
-    ========= =================================
+    =============== ========================================
+    `Index`_        Fetch a list of all of the users
+    `Get`_          Lookup user info
+    `Create`_       Create a new user
+    =============== ========================================
 
-    .. _Index: #pastry.resources.users.Users.index
-    .. _Get:   #pastry.resources.users.Users.get
+    .. _Index:      #pastry.resources.users.Users.index
+    .. _Get:        #pastry.resources.users.Users.get
+    .. _Create:     #pastry.resources.users.Users.create
 
 API Reference
 -------------
@@ -26,4 +28,4 @@ API Reference
 
 
 .. autoclass:: Users
-   :members: index, get
+   :members: index, get, create
