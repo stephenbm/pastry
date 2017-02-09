@@ -13,6 +13,7 @@ Welcome to pastry's documentation!
  
     pastry_client.rst
     users.rst
+    groups.rst
 
 Indices and tables
 ==================
