@@ -73,3 +73,10 @@ class Base(object):
             if err.statuscode == 404:
                 return False
         return True
+
+    @classmethod
+    def escape_query(cls, query_string):
+        '''
+        Escape '%' characters in query_string
+        '''
+        return query_string.replace('%', '%%')

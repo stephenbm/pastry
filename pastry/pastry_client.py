@@ -116,7 +116,7 @@ class PastryClient(object):
         server, path = cls.get_url(endpoint)
         kwargs = {
             'headers': signed_headers(
-                cls._client, cls._keypath, path, method=method, data=data),
+                cls._client, cls._keypath, path.split('?', 1)[0], method=method, data=data),
             'verify': cls._verify
         }
         if data:

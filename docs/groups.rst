@@ -3,7 +3,7 @@
 Groups
 =====
 
-The groups module adds support for the chef group resource.
+The groups resource adds support for managing chef groups.
 
 Supported Operations
 --------------------

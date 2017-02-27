@@ -14,6 +14,7 @@ Welcome to pastry's documentation!
     pastry_client.rst
     users.rst
     groups.rst
+    search.rst
 
 Indices and tables
 ==================
