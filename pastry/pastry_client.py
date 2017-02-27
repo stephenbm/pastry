@@ -114,9 +114,15 @@ class PastryClient(object):
         :rtype: hash
         '''
         server, path = cls.get_url(endpoint)
+        headers = signed_headers(
+            cls._client,
+            cls._keypath,
+            path.split('?', 1)[0],
+            method=method,
+            data=data
+        )
         kwargs = {
-            'headers': signed_headers(
-                cls._client, cls._keypath, path.split('?', 1)[0], method=method, data=data),
+            'headers': headers,
             'verify': cls._verify
         }
         if data:

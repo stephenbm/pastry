@@ -48,7 +48,6 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(Base.delete('instanceid'), 'result')
         pastry_client.call.assert_called_with('url/instanceid', method='DELETE')
 
-
     @mock.patch('pastry.resources.base.Base.get')
     def test_exists(self, get):
         get.return_value = {'instanceid': 'id'}
@@ -56,3 +55,9 @@ class BaseTestCase(unittest.TestCase):
         get.assert_called_with('instanceid')
         get.side_effect = HttpError('message', 404)
         self.assertEqual(Base.exists('instanceid'), False)
+
+    def test_escape_query(self):
+        self.assertEqual(
+            Base.escape_query('test%query%string'),
+            'test%%query%%string'
+        )

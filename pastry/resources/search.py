@@ -4,6 +4,7 @@ import urllib
 from .base import Base
 from pastry.pastry_client import PastryClient
 
+
 class Search(Base):
     '''
     Provides access to chef `search`
