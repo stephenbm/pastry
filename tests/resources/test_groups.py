@@ -18,6 +18,14 @@ class GroupsTestCase(unittest.TestCase):
     def test_create(self, base):
         self.assertEqual(Groups.create({}), 'group')
 
+    @mock.patch('pastry.resources.groups.Base.update', return_value='group')
+    def test_update(self, base):
+        self.assertEqual(Groups.update('group', {}), 'group')
+
     @mock.patch('pastry.resources.groups.Base.delete', return_value='group')
     def test_delete(self, base):
         self.assertEqual(Groups.delete('group'), 'group')
+
+    @mock.patch('pastry.resources.groups.Base.exists', return_value=True)
+    def test_exists(self, base):
+        self.assertEqual(Groups.exists('group'), True)

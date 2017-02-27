@@ -56,6 +56,20 @@ class Users(Base):
         return super(Users, cls).create(user)
 
     @classmethod
+    def update(cls, username, user):
+        '''
+        Updates a user on the chef server
+
+        :param username: The User's username
+        :param user: The User members and content
+        :type username: string
+        :type user: hash
+        :return: The username and url
+        :rtype: hash
+        '''
+        return super(Users, cls).update(username, user)
+
+    @classmethod
     def delete(cls, username):
         '''
         Deletes a user from the chef server
@@ -66,3 +80,15 @@ class Users(Base):
         :rtype: hash
         '''
         return super(Users, cls).delete(username)
+
+    @classmethod
+    def exists(cls, username):
+        '''
+        Checks if a user exists on the chef server
+
+        :param username: The User's username
+        :type usename: string
+        :return: If the user exists
+        :rtype: boolean
+        '''
+        return super(Users, cls).exists(username)

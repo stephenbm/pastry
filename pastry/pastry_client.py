@@ -5,6 +5,7 @@ import yaml
 import requests
 
 from pastry.utils.auth import signed_headers
+from pastry.exceptions import HttpError
 
 HTTP_METHODS = {
     'GET': requests.get,
@@ -24,11 +25,11 @@ class PastryClient(object):
     _organization = None
     _client = None
     _keypath = None
+    _verify = None
     initialized = False
-    verify = True
 
     @classmethod
-    def initialize(cls, server, organization, client, keypath):
+    def initialize(cls, server, organization, client, keypath, verify):
         '''
         Initializes the server connection info
 
@@ -36,15 +37,18 @@ class PastryClient(object):
         :param organization: The name of the cheff org to use
         :param client: The client/username to use
         :param keypath: The path to the pem for the client/user
+        :param verify: Verify the ssl cert on requests
         :type server: string
         :type organization: string
         :type client: string
         :type keypath: string
+        :type verify: boolean
         '''
         cls._server = server
         cls._organization = organization
         cls._client = client
         cls._keypath = keypath
+        cls._verify = verify
         cls.initialized = True
 
     @classmethod
@@ -77,7 +81,8 @@ class PastryClient(object):
             config['server'],
             config['organization'],
             config['client'],
-            config['keypath']
+            config['keypath'],
+            config.get('verify', True)
         )
 
     @classmethod
@@ -112,11 +117,11 @@ class PastryClient(object):
         kwargs = {
             'headers': signed_headers(
                 cls._client, cls._keypath, path, method=method, data=data),
-            'verify': cls.verify
+            'verify': cls._verify
         }
         if data:
             kwargs['json'] = data
         resp = HTTP_METHODS[method]('%s%s' % (server, path), **kwargs)
         if not resp.ok:
-            raise Exception('%s: %s' % (resp.status_code, resp.text))
+            raise HttpError(resp.text, resp.status_code)
         return resp.json()

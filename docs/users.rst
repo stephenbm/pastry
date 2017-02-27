@@ -15,13 +15,17 @@ Supported Operations
     `Index`_        Fetch a list of all of the users
     `Get`_          Lookup user info
     `Create`_       Create a new user
-    `Delete`_       Delete a user
+    `Update`_       Update a group
+    `Delete`_       Delete a group
+    `Exists`_       Check if a user exists
     =============== ========================================
 
     .. _Index:      #pastry.resources.users.Users.index
     .. _Get:        #pastry.resources.users.Users.get
     .. _Create:     #pastry.resources.users.Users.create
+    .. _Update:     #pastry.resources.users.Users.update
     .. _Delete:     #pastry.resources.users.Users.delete
+    .. _Exists:     #pastry.resources.users.Users.exists
 
 API Reference
 -------------
@@ -30,4 +34,4 @@ API Reference
 
 
 .. autoclass:: Users
-   :members: index, get, create, delete
+   :members: index, get, create, update, delete, exists

@@ -2,6 +2,7 @@
 methods'''
 
 from pastry.pastry_client import PastryClient
+from pastry.exceptions import HttpError
 
 
 class Base(object):
@@ -43,9 +44,32 @@ class Base(object):
             '%s' % cls.base_url(), method='POST', data=instance)
 
     @classmethod
+    def update(cls, instanceid, instance):
+        '''
+        Update an instance
+        '''
+        return PastryClient.call(
+            '%s/%s' % (cls.base_url(), instanceid),
+            method='PUT',
+            data=instance
+        )
+
+    @classmethod
     def delete(cls, instanceid):
         '''
         Delete an instance
         '''
         return PastryClient.call(
             '%s/%s' % (cls.base_url(), instanceid), method='DELETE')
+
+    @classmethod
+    def exists(cls, instanceid):
+        '''
+        Check if an instance exists
+        '''
+        try:
+            cls.get(instanceid)
+        except HttpError as err:
+            if err.statuscode == 404:
+                return False
+        return True

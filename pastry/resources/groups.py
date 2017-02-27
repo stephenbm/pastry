@@ -32,16 +32,40 @@ class Groups(Base):
         return super(Groups, cls).get(groupname)
 
     @classmethod
-    def create(cls, groupname):
+    def create(cls, group):
         '''
         Creates a new chef group on the server
 
-        :param groupname: The name of the group to create
-        :type groupname: string
+        The group hash should be in the form::
+
+            {
+                'groupname': <groupname>,
+                'name': <groupname>, # optional
+                'actors': <list of usernames>, # optional
+                'clients': <list of clients>, #optional
+                'groups': <list of groups> #optional
+            }
+
+        :param group: The group to create
+        :type group: hash
         :return: The groupname and url
         :rtype: hash
         '''
-        return super(Groups, cls).create(groupname)
+        return super(Groups, cls).create(group)
+
+    @classmethod
+    def update(cls, groupname, group):
+        '''
+        Updates a group on the chef server
+
+        :param groupname: The Group's groupname
+        :param group: The Group members and content
+        :type groupname: string
+        :type group: hash
+        :return: The groupname and url
+        :rtype: hash
+        '''
+        return super(Groups, cls).update(groupname, group)
 
     @classmethod
     def delete(cls, groupname):
@@ -49,8 +73,20 @@ class Groups(Base):
         Deletes a group from the chef server
 
         :param groupname: The Group's groupname
-        :type usename: string
+        :type groupname: string
         :return: The deleted group's name
         :rtype: hash
         '''
         return super(Groups, cls).delete(groupname)
+
+    @classmethod
+    def exists(cls, groupname):
+        '''
+        Checks if a group exists on the chef server
+
+        :param username: The Group's groupname
+        :type usename: string
+        :return: If the group exists
+        :rtype: boolean
+        '''
+        return super(Groups, cls).exists(groupname)

@@ -18,6 +18,14 @@ class UsersTestCase(unittest.TestCase):
     def test_create(self, base):
         self.assertEqual(Users.create({}), 'user')
 
+    @mock.patch('pastry.resources.users.Base.update', return_value='user')
+    def test_update(self, base):
+        self.assertEqual(Users.update('user', {}), 'user')
+
     @mock.patch('pastry.resources.users.Base.delete', return_value='user')
     def test_delete(self, base):
         self.assertEqual(Users.delete('user'), 'user')
+
+    @mock.patch('pastry.resources.users.Base.exists', return_value=True)
+    def test_exists(self, base):
+        self.assertEqual(Users.exists('user'), True)

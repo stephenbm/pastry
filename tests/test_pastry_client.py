@@ -14,11 +14,12 @@ class PastryClientTestCase(unittest.TestCase):
         PastryClient._keypath = None
 
     def test_initialize(self):
-        PastryClient.initialize('server', 'organization', 'client', 'keypath')
+        PastryClient.initialize('server', 'organization', 'client', 'keypath', 'verify')
         self.assertEqual(PastryClient._server, 'server')
         self.assertEqual(PastryClient._organization, 'organization')
         self.assertEqual(PastryClient._client, 'client')
         self.assertEqual(PastryClient._keypath, 'keypath')
+        self.assertEqual(PastryClient._verify, 'verify')
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
     @mock.patch('pastry.pastry_client.os')
@@ -30,12 +31,13 @@ class PastryClientTestCase(unittest.TestCase):
             'server': 'server',
             'organization': 'organization',
             'client': 'client',
-            'keypath': 'keypath'
+            'keypath': 'keypath',
+            'verify': 'verify'
         }
         with mock.patch('__builtin__.open', mock.mock_open(read_data='config')):
             PastryClient.load_config()
             initialize.assert_called_with(
-                'server', 'organization', 'client', 'keypath')
+                'server', 'organization', 'client', 'keypath', 'verify')
         os.path.exists.return_value = False
         self.assertRaises(ValueError, PastryClient.load_config)
 
@@ -53,8 +55,13 @@ class PastryClientTestCase(unittest.TestCase):
         response.ok = True
         methods['GET'].return_value = response
         PastryClient.call('endpoint')
-        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient._verify)
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
-        methods['POST'].assert_called_with('serverpath', headers='headers', json={'key': 'value'}, verify=PastryClient.verify)
+        methods['POST'].assert_called_with(
+            'serverpath',
+            headers='headers',
+            json={'key': 'value'},
+            verify=PastryClient._verify
+        )
         response.ok = False
         self.assertRaises(Exception, PastryClient.call, 'endpoint')
