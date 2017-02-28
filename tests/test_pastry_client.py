@@ -19,7 +19,7 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual(PastryClient._organization, 'organization')
         self.assertEqual(PastryClient._client, 'client')
         self.assertEqual(PastryClient._keypath, 'keypath')
-        self.assertEqual(PastryClient._verify, 'verify')
+        self.assertEqual(PastryClient.verify, 'verify')
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
     @mock.patch('pastry.pastry_client.os')
@@ -55,13 +55,13 @@ class PastryClientTestCase(unittest.TestCase):
         response.ok = True
         methods['GET'].return_value = response
         PastryClient.call('endpoint')
-        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient._verify)
+        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
         methods['POST'].assert_called_with(
             'serverpath',
             headers='headers',
             json={'key': 'value'},
-            verify=PastryClient._verify
+            verify=PastryClient.verify
         )
         response.ok = False
         self.assertRaises(Exception, PastryClient.call, 'endpoint')

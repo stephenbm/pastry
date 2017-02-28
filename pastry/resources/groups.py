@@ -1,4 +1,4 @@
-'''groups provides the methods for chef group resources'''
+'''Groups provides the methods for chef group resources'''
 
 from .base import Base
 

@@ -25,7 +25,7 @@ class PastryClient(object):
     _organization = None
     _client = None
     _keypath = None
-    _verify = None
+    verify = None
     initialized = False
 
     @classmethod
@@ -48,7 +48,7 @@ class PastryClient(object):
         cls._organization = organization
         cls._client = client
         cls._keypath = keypath
-        cls._verify = verify
+        cls.verify = verify
         cls.initialized = True
 
     @classmethod
@@ -123,7 +123,7 @@ class PastryClient(object):
         )
         kwargs = {
             'headers': headers,
-            'verify': cls._verify
+            'verify': cls.verify
         }
         if data:
             kwargs['json'] = data
