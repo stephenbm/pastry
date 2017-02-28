@@ -57,7 +57,7 @@ class Cookbooks(Base):
         return parts
 
     @classmethod
-    def file_content(cls, cookbook, filename, version='latest'):
+    def file_content(cls, cookbook, filename, version='_latest'):
         '''
         Fetches the contents of a specific file in a cookbook
 
