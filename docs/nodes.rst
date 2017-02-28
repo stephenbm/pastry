@@ -12,7 +12,7 @@ Supported Operations
     `Exists`_       Check if a node exists
     =============== ========================================
 
-    .. _Exists:     #pastry.resources.groups.Groups.exists
+    .. _Exists:     #pastry.resources.nodes.Nodes.exists
 
 API Reference
 -------------
