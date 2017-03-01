@@ -21,10 +21,10 @@ class PastryClient(object):
     You can use the PastryClient to initialize the config to use for the
     chef server.
     '''
-    _server = None
-    _organization = None
-    _client = None
-    _keypath = None
+    server = None
+    organization = None
+    client = None
+    keypath = None
     verify = None
     initialized = False
 
@@ -44,10 +44,10 @@ class PastryClient(object):
         :type keypath: string
         :type verify: boolean
         '''
-        cls._server = server
-        cls._organization = organization
-        cls._client = client
-        cls._keypath = keypath
+        cls.server = server
+        cls.organization = organization
+        cls.client = client
+        cls.keypath = keypath
         cls.verify = verify
         cls.initialized = True
 
@@ -97,7 +97,7 @@ class PastryClient(object):
         '''
         if not cls.initialized:
             cls.load_config()
-        return cls._server, (endpoint % {'org': cls._organization})
+        return cls.server, (endpoint % {'org': cls.organization})
 
     @classmethod
     def call(cls, endpoint, method='GET', data=None):
@@ -115,8 +115,8 @@ class PastryClient(object):
         '''
         server, path = cls.get_url(endpoint)
         headers = signed_headers(
-            cls._client,
-            cls._keypath,
+            cls.client,
+            cls.keypath,
             path.split('?', 1)[0],
             method=method,
             data=data

@@ -8,17 +8,17 @@ class PastryClientTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        PastryClient._server = None
-        PastryClient._organization = None
-        PastryClient._client = None
-        PastryClient._keypath = None
+        PastryClient.server = None
+        PastryClient.organization = None
+        PastryClient.client = None
+        PastryClient.keypath = None
 
     def test_initialize(self):
         PastryClient.initialize('server', 'organization', 'client', 'keypath', 'verify')
-        self.assertEqual(PastryClient._server, 'server')
-        self.assertEqual(PastryClient._organization, 'organization')
-        self.assertEqual(PastryClient._client, 'client')
-        self.assertEqual(PastryClient._keypath, 'keypath')
+        self.assertEqual(PastryClient.server, 'server')
+        self.assertEqual(PastryClient.organization, 'organization')
+        self.assertEqual(PastryClient.client, 'client')
+        self.assertEqual(PastryClient.keypath, 'keypath')
         self.assertEqual(PastryClient.verify, 'verify')
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
