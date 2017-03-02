@@ -24,6 +24,11 @@ class Groups(Base):
         '''
         Fetches a group from the chef server
 
+        .. note::
+
+            Chef returns a slightly different format to
+            what it expects for create/update groups.
+
         :param groupname: The Group's name
         :type groupname: string
         :return: The chef group and members
@@ -41,9 +46,11 @@ class Groups(Base):
             {
                 'groupname': <groupname>,
                 'name': <groupname>, # optional
-                'actors': <list of usernames>, # optional
-                'clients': <list of clients>, #optional
-                'groups': <list of groups> #optional
+                'actors': { #optional
+                    'users': <list of usernames>, # optional
+                    'clients': <list of clients>, #optional
+                    'groups': <list of groups> #optional
+                }
             }
 
         :param group: The group to create
@@ -57,6 +64,8 @@ class Groups(Base):
     def update(cls, groupname, group):
         '''
         Updates a group on the chef server
+
+        the group hash should be in the same format as for create
 
         :param groupname: The Group's groupname
         :param group: The Group members and content
