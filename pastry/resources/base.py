@@ -80,3 +80,22 @@ class Base(object):
         Escape '%' characters in query_string
         '''
         return query_string.replace('%', '%%')
+
+    @classmethod
+    def get_acl(cls, instanceid):
+        '''
+        Fetch the acl for a chef resource
+        '''
+        return PastryClient.call(
+            '%s/%s/_acl' % (cls.base_url(), instanceid))
+
+    @classmethod
+    def set_permission(cls, instanceid, permission, actors):
+        '''
+        Set a permission on a chef resource
+        '''
+        return PastryClient.call(
+            '%s/%s/_acl/%s' % (cls.base_url(), instanceid, permission),
+            method='PUT',
+            data={permission: actors}
+        )

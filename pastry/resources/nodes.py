@@ -20,3 +20,39 @@ class Nodes(Base):
         :rtype: boolean
         '''
         return super(Nodes, cls).exists(nodename)
+
+    @classmethod
+    def get_acl(cls, nodename):
+        '''
+        Gets the access control list for the node
+
+        :param nodename: The Node's nodename
+        :type nodename: string
+        :return: The acl for the node
+        :rtype: hash
+        '''
+        return super(Nodes, cls).get_acl(nodename)
+
+    @classmethod
+    def set_permission(cls, nodename, permission, actors):
+        '''
+        Grants the specified actors a permission on the node. Chef only
+        supports setting one permission at a time.
+
+        The actors hash should be in the form::
+
+            {
+                'actors': <list of usernames>
+                'groups': <list of groupnames>
+            }
+
+        :param nodename: The Node's nodename
+        :param  Check if a node existspermission: One of: create, read, update, delete, grant
+        :param actors: The set of actors to grant this permission to
+        :type nodename: string
+        :type permission: string
+        :type actors: hash
+        :return: empty hash
+        :type: hash
+        '''
+        return super(Nodes, cls).set_permission(nodename, permission, actors)

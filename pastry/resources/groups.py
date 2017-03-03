@@ -45,7 +45,7 @@ class Groups(Base):
 
             {
                 'groupname': <groupname>,
-                'name': <groupname>, # optional
+                'name': <groupname>,
                 'actors': { #optional
                     'users': <list of usernames>, # optional
                     'clients': <list of clients>, #optional
