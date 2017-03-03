@@ -61,3 +61,21 @@ class BaseTestCase(unittest.TestCase):
             Base.escape_query('test%query%string'),
             'test%%query%%string'
         )
+
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
+    @mock.patch('pastry.resources.base.PastryClient')
+    def test_get_acl(self, pastry_client, base_url):
+        pastry_client.call.return_value = 'result'
+        self.assertEqual(Base.get_acl('instance'), 'result')
+        pastry_client.call.assert_called_with('url/instance/_acl')
+
+    @mock.patch('pastry.resources.base.Base.base_url', return_value='url')
+    @mock.patch('pastry.resources.base.PastryClient')
+    def test_set_permission(self, pastry_client, base_url):
+        pastry_client.call.return_value = 'result'
+        self.assertEqual(Base.set_permission('instance', 'permission', {}), 'result')
+        pastry_client.call.assert_called_with(
+            'url/instance/_acl/permission',
+            method='PUT',
+            data={'permission': {}}
+        )
