@@ -12,10 +12,11 @@ Welcome to pastry's documentation!
     :maxdepth: 2
  
     pastry_client.rst
+    search.rst
     users.rst
     groups.rst
     nodes.rst
-    search.rst
+    cookbooks.rst
 
 Indices and tables
 ==================
