@@ -1,7 +1,7 @@
 .. module:: pastry.resources.groups
 
 Groups
-=====
+======
 
 The groups resource adds support for managing chef groups.
 
