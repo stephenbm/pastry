@@ -51,6 +51,14 @@ class Cookbooks(Base):
 
     @classmethod
     def parse_filename(cls, filename):
+        '''
+        Splits the file path so that it can be used to call the chef api
+
+        :param filename: The file's path relative to the cookbook root
+        :type filename: string
+        :return: The type of file, specificity, and filename
+        :rtype: iterable
+        '''
         parts = filename.split('/')
         if len(parts) == 1:
             return ['root_files', 'default', filename]
