@@ -25,5 +25,5 @@ Supported Operations
 API Reference
 -------------
 
-.. autoclass:: Groups
+.. autoclass:: Cookbooks
    :members: index, exists, contents, parse_filename, file_content
