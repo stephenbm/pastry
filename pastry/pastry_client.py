@@ -64,7 +64,7 @@ class PastryClient(object):
 
         .. code-block::
 
-            with PastryClient.context(orgnaization='myorg'):
+            with PastryClient.context(organization='myorg'):
                 print Nodes.exists('mynode')
         '''
         default_org = cls.organization

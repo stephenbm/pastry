@@ -26,7 +26,6 @@ class PastryClientTestCase(unittest.TestCase):
         with PastryClient.context(organization='org'):
             self.assertEqual(PastryClient.organization, 'org')
         self.assertEqual(PastryClient.organization, current)
-        
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
     @mock.patch('pastry.pastry_client.os')
