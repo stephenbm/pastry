@@ -3,9 +3,11 @@
 import os
 import yaml
 import requests
+from contextlib import contextmanager
 
 from pastry.utils.auth import signed_headers
 from pastry.exceptions import HttpError
+
 
 HTTP_METHODS = {
     'GET': requests.get,
@@ -50,6 +52,25 @@ class PastryClient(object):
         cls.keypath = keypath
         cls.verify = verify
         cls.initialized = True
+
+    @classmethod
+    @contextmanager
+    def context(cls, organization=organization):
+        '''
+        Context manager to override the default org
+
+        :param organization: The name of the org to use for the command
+        :type organization: string
+
+        .. code-block::
+
+            with PastryClient.context(orgnaization='myorg'):
+                print Nodes.exists('mynode')
+        '''
+        default_org = cls.organization
+        cls.organization = organization
+        yield
+        cls.organization = default_org
 
     @classmethod
     def load_config(cls, config_path=None):
