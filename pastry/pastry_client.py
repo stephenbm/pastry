@@ -67,6 +67,8 @@ class PastryClient(object):
             with PastryClient.context(organization='myorg'):
                 print Nodes.exists('mynode')
         '''
+        if not cls.initialized:
+            cls.load_config()
         default_org = cls.organization
         cls.organization = organization
         yield

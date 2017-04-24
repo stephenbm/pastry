@@ -21,11 +21,14 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual(PastryClient.keypath, 'keypath')
         self.assertEqual(PastryClient.verify, 'verify')
 
-    def test_organization(self):
+    @mock.patch('pastry.pastry_client.PastryClient.load_config')
+    def test_organization(self, load_config):
         current = PastryClient.organization
+        PastryClient.initialized = False
         with PastryClient.context(organization='org'):
             self.assertEqual(PastryClient.organization, 'org')
         self.assertEqual(PastryClient.organization, current)
+        self.assertEqual(load_config.call_count, 1)
 
     @mock.patch('pastry.pastry_client.PastryClient.initialize')
     @mock.patch('pastry.pastry_client.os')
