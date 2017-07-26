@@ -14,8 +14,8 @@ class Nodes(Base):
         '''
         Checks if a node exists on the chef server
 
-        :param username: The Node's nodename
-        :type usename: string
+        :param nodename: The Node's nodename
+        :type nodename: string
         :return: If the node exists
         :rtype: boolean
         '''
@@ -47,7 +47,7 @@ class Nodes(Base):
             }
 
         :param nodename: The Node's nodename
-        :param  Check if a node existspermission: One of: create, read, update, delete, grant
+        :param permission: One of: create, read, update, delete, grant
         :param actors: The set of actors to grant this permission to
         :type nodename: string
         :type permission: string
