@@ -10,4 +10,4 @@ class PushyTestCase(unittest.TestCase):
     @mock.patch('pastry.resources.pushy.PastryClient.call', return_value={})
     def test_exists(self, call, base_url):
         self.assertEqual(Pushy.status('node'), {})
-        call.assert_called_with('base/node')
+        call.assert_called_with('base/node_states/node')

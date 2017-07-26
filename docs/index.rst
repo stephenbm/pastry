@@ -17,6 +17,7 @@ Welcome to pastry's documentation!
     groups.rst
     nodes.rst
     cookbooks.rst
+    pushy.rst
 
 Indices and tables
 ==================

@@ -21,4 +21,4 @@ class Pushy(Base):
         :rtype: boolean
         '''
         return PastryClient.call(
-            '%s/%s' % (cls.base_url(), nodename))
+            '%s/node_states/%s' % (cls.base_url(), nodename))
