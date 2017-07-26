@@ -154,3 +154,16 @@ class PastryClient(object):
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
         return resp.json()
+
+    @classmethod
+    def status(cls):
+        '''
+        Check the chef server status
+
+        :return: The json response form the server
+        :type: hash
+        '''
+        resp = requests.get('%s/_status' % cls.server, verify=cls.verify)
+        if not resp.ok:
+            raise HttpError(resp.text, resp.status_code)
+        return resp.json()

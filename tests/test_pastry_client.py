@@ -74,3 +74,14 @@ class PastryClientTestCase(unittest.TestCase):
         )
         response.ok = False
         self.assertRaises(Exception, PastryClient.call, 'endpoint')
+
+    @mock.patch('pastry.pastry_client.requests.get')
+    def test_status(self, get):
+        resp = mock.MagicMock()
+        resp.ok = True
+        resp.json.return_value = {'json': 'content'}
+        get.return_value = resp
+        self.assertEqual(PastryClient.status(), resp.json())
+        get.assert_called_with('%s/_status' % PastryClient.server, verify=PastryClient.verify)
+        resp.ok = False
+        self.assertRaises(Exception, PastryClient.status)
