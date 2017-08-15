@@ -18,6 +18,7 @@ Supported Operations
     `Update`_       Update a group
     `Delete`_       Delete a group
     `Exists`_       Check if a user exists
+    `Invite`_       Invite a user to an org
     =============== ========================================
 
     .. _Index:      #pastry.resources.users.Users.index
@@ -26,6 +27,7 @@ Supported Operations
     .. _Update:     #pastry.resources.users.Users.update
     .. _Delete:     #pastry.resources.users.Users.delete
     .. _Exists:     #pastry.resources.users.Users.exists
+    .. _Invite:     #pastry.resources.users.Users.invite
 
 API Reference
 -------------
@@ -34,4 +36,4 @@ API Reference
 
 
 .. autoclass:: Users
-   :members: index, get, create, update, delete, exists
+   :members: index, get, create, update, delete, exists, invite

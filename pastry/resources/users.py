@@ -1,6 +1,7 @@
 '''users provides the methods for chef user resources'''
 
 from .base import Base
+from pastry.pastry_client import PastryClient
 
 
 class Users(Base):
@@ -92,3 +93,21 @@ class Users(Base):
         :rtype: boolean
         '''
         return super(Users, cls).exists(username)
+
+    @classmethod
+    def invite(cls, username, orgname):
+        '''
+        Invite a user to an org
+
+        :param username: The User's username
+        :param orgname: The chef organization
+        :type username: string
+        :type orgname: string
+        :return: If the request was successful
+        :rtype: boolean
+        '''
+        return PastryClient.call(
+            'organizations/%s/association_requests' % orgname,
+            method='POST',
+            data={'user': username}
+        )

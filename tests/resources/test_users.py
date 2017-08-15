@@ -29,3 +29,12 @@ class UsersTestCase(unittest.TestCase):
     @mock.patch('pastry.resources.users.Base.exists', return_value=True)
     def test_exists(self, base):
         self.assertEqual(Users.exists('user'), True)
+
+    @mock.patch('pastry.resources.users.PastryClient.call', return_value=True)
+    def test_invite(self, call):
+        self.assertEqual(Users.invite('user', 'org'), True)
+        call.assert_called_with(
+            'organizations/org/association_requests',
+            method='POST',
+            data={'user': 'user'}
+        )
