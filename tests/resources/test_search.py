@@ -21,7 +21,7 @@ class SearchTestCase(unittest.TestCase):
             start=1,
             filters={'name': 'name'}
         ), 'results')
-        urlencode.assert_called_with({'query': 'query', 'rows': 1, 'start': 1})
+        urlencode.assert_called_with({'q': 'query', 'rows': 1, 'start': 1})
         escape_query.assert_called_with('query_string')
         call.assert_called_with(
             '/organizations/%(org)s/search/index?escaped',

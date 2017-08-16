@@ -16,6 +16,7 @@ Welcome to pastry's documentation!
     users.rst
     groups.rst
     nodes.rst
+    environmnets.rst
     cookbooks.rst
     pushy.rst
 

@@ -52,12 +52,13 @@ class Search(Base):
         :rtype: hash
         '''
         query_string = cls.escape_query(urllib.urlencode({
-            'query': query,
+            'q': query,
             'rows': rows,
             'start': start
         }))
+        method = 'POST' if filters else 'GET'
         return PastryClient.call(
             '%s/%s?%s' % (cls.base_url(), index, query_string),
-            method='POST',
+            method=method,
             data=filters
         )
