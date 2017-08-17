@@ -12,6 +12,7 @@ class PastryClientTestCase(unittest.TestCase):
         PastryClient.organization = None
         PastryClient.client = None
         PastryClient.keypath = None
+        PastryClient._session = mock.MagicMock()
 
     def test_initialize(self):
         PastryClient.initialize('server', 'organization', 'client', 'keypath', 'verify')
@@ -54,19 +55,18 @@ class PastryClientTestCase(unittest.TestCase):
     def test_get_url(self, load_config):
         self.assertEqual((None, 'endpoint'), PastryClient.get_url('endpoint'))
 
-    @mock.patch('pastry.pastry_client.HTTP_METHODS')
     @mock.patch('pastry.pastry_client.signed_headers')
     @mock.patch('pastry.pastry_client.PastryClient.get_url')
-    def test_call(self, get_url, signed_headers, methods):
+    def test_call(self, get_url, signed_headers):
         get_url.return_value = ('server', 'path')
         signed_headers.return_value = 'headers'
         response = mock.MagicMock()
         response.ok = True
-        methods['GET'].return_value = response
+        PastryClient._session.get.return_value = response
         PastryClient.call('endpoint')
-        methods['GET'].assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        PastryClient._session.get.assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
-        methods['POST'].assert_called_with(
+        PastryClient._session.post.assert_called_with(
             'serverpath',
             headers='headers',
             json={'key': 'value'},

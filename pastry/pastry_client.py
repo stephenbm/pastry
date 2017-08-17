@@ -9,14 +9,6 @@ from pastry.utils.auth import signed_headers
 from pastry.exceptions import HttpError
 
 
-HTTP_METHODS = {
-    'GET': requests.get,
-    'POST': requests.post,
-    'PUT': requests.put,
-    'DELETE': requests.delete
-}
-
-
 class PastryClient(object):
     '''
     PastryClient is used by the resources to send requests to chef.
@@ -29,6 +21,7 @@ class PastryClient(object):
     keypath = None
     verify = None
     initialized = False
+    _session = None
 
     @classmethod
     def initialize(cls, server, organization, client, keypath, verify):
@@ -51,6 +44,7 @@ class PastryClient(object):
         cls.client = client
         cls.keypath = keypath
         cls.verify = verify
+        cls._session = requests.Session()
         cls.initialized = True
 
     @classmethod
@@ -150,7 +144,12 @@ class PastryClient(object):
         }
         if data:
             kwargs['json'] = data
-        resp = HTTP_METHODS[method]('%s%s' % (server, path), **kwargs)
+        resp = {
+            'GET': cls._session.get,
+            'POST': cls._session.post,
+            'PUT': cls._session.put,
+            'DELETE': cls._session.delete
+        }[method]('%s%s' % (server, path), **kwargs)
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
         return resp.json()
