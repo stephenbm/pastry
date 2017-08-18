@@ -152,6 +152,7 @@ class PastryClient(object):
         resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
+        resp.close()
         return resp.json()
 
     @classmethod
@@ -166,4 +167,5 @@ class PastryClient(object):
         resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
+        resp.close()
         return resp.json()
