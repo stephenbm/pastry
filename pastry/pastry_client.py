@@ -2,7 +2,7 @@
 
 import os
 import yaml
-import requests
+import grequests
 from contextlib import contextmanager
 
 from pastry.utils.auth import signed_headers
@@ -21,7 +21,6 @@ class PastryClient(object):
     keypath = None
     verify = None
     initialized = False
-    _session = None
 
     @classmethod
     def initialize(cls, server, organization, client, keypath, verify):
@@ -44,7 +43,6 @@ class PastryClient(object):
         cls.client = client
         cls.keypath = keypath
         cls.verify = verify
-        cls._session = requests.Session()
         cls.initialized = True
 
     @classmethod
@@ -144,15 +142,17 @@ class PastryClient(object):
         }
         if data:
             kwargs['json'] = data
-        resp = {
-            'GET': cls._session.get,
-            'POST': cls._session.post,
-            'PUT': cls._session.put,
-            'DELETE': cls._session.delete
+
+        rs = {
+            'GET': grequests.get,
+            'POST': grequests.post,
+            'PUT': grequests.put,
+            'DELETE': grequests.delete
         }[method]('%s%s' % (server, path), **kwargs)
-        if not resp.ok:
-            raise HttpError(resp.text, resp.status_code)
-        return resp.json()
+        rs.send()
+        if not rs.response.ok:
+            raise HttpError(rs.response.text, rs.response.status_code)
+        return rs.response.json()
 
     @classmethod
     def status(cls):
@@ -162,7 +162,8 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        resp = requests.get('%s/_status' % cls.server, verify=cls.verify)
-        if not resp.ok:
-            raise HttpError(resp.text, resp.status_code)
-        return resp.json()
+        rs = grequests.get('%s/_status' % cls.server, verify=cls.verify)
+        rs.send()
+        if not rs.response.ok:
+            raise HttpError(rs.response.text, rs.response.status_code)
+        return rs.response.json()

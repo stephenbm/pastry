@@ -38,7 +38,7 @@ tests_require = [
 
 setup(
     name='pastry',
-    version='0.1.19',
+    version='0.1.20',
     description='A simple api wrapper for chef',
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
     author='Stephen Breyer-Menke',

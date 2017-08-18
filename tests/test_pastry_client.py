@@ -56,17 +56,19 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual((None, 'endpoint'), PastryClient.get_url('endpoint'))
 
     @mock.patch('pastry.pastry_client.signed_headers')
+    @mock.patch('pastry.pastry_client.grequests')
     @mock.patch('pastry.pastry_client.PastryClient.get_url')
-    def test_call(self, get_url, signed_headers):
+    def test_call(self, get_url, grequests, signed_headers):
         get_url.return_value = ('server', 'path')
         signed_headers.return_value = 'headers'
         response = mock.MagicMock()
+        response.response = response
         response.ok = True
-        PastryClient._session.get.return_value = response
+        grequests.get.return_value = response
         PastryClient.call('endpoint')
-        PastryClient._session.get.assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        grequests.get.assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
-        PastryClient._session.post.assert_called_with(
+        grequests.post.assert_called_with(
             'serverpath',
             headers='headers',
             json={'key': 'value'},
@@ -75,9 +77,10 @@ class PastryClientTestCase(unittest.TestCase):
         response.ok = False
         self.assertRaises(Exception, PastryClient.call, 'endpoint')
 
-    @mock.patch('pastry.pastry_client.requests.get')
+    @mock.patch('pastry.pastry_client.grequests.get')
     def test_status(self, get):
         resp = mock.MagicMock()
+        resp.response = resp
         resp.ok = True
         resp.json.return_value = {'json': 'content'}
         get.return_value = resp
