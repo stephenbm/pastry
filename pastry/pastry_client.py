@@ -143,16 +143,16 @@ class PastryClient(object):
         if data:
             kwargs['json'] = data
 
-        rs = {
+        resp = {
             'GET': grequests.get,
             'POST': grequests.post,
             'PUT': grequests.put,
             'DELETE': grequests.delete
         }[method]('%s%s' % (server, path), **kwargs)
-        rs.send()
-        if not rs.response.ok:
-            raise HttpError(rs.response.text, rs.response.status_code)
-        return rs.response.json()
+        resp.send()
+        if not resp.response.ok:
+            raise HttpError(resp.response.text, resp.response.status_code)
+        return resp.response.json()
 
     @classmethod
     def status(cls):
@@ -162,8 +162,8 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        rs = grequests.get('%s/_status' % cls.server, verify=cls.verify)
-        rs.send()
-        if not rs.response.ok:
-            raise HttpError(rs.response.text, rs.response.status_code)
-        return rs.response.json()
+        resp = grequests.get('%s/_status' % cls.server, verify=cls.verify)
+        resp.send()
+        if not resp.response.ok:
+            raise HttpError(resp.response.text, resp.response.status_code)
+        return resp.response.json()
