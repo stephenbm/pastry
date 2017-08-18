@@ -2,6 +2,7 @@
 
 import os
 import yaml
+import requests
 import grequests
 from contextlib import contextmanager
 
@@ -143,16 +144,16 @@ class PastryClient(object):
         if data:
             kwargs['json'] = data
 
-        resp = {
+        req = {
             'GET': grequests.get,
             'POST': grequests.post,
             'PUT': grequests.put,
             'DELETE': grequests.delete
         }[method]('%s%s' % (server, path), **kwargs)
-        resp.send()
-        if not resp.response.ok:
-            raise HttpError(resp.response.text, resp.response.status_code)
-        return resp.response.json()
+        resp = req.send(stream=False).response
+        if not resp.ok:
+            raise HttpError(resp.text, resp.status_code)
+        return resp.json()
 
     @classmethod
     def status(cls):
@@ -162,8 +163,8 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        resp = grequests.get('%s/_status' % cls.server, verify=cls.verify)
-        resp.send()
-        if not resp.response.ok:
-            raise HttpError(resp.response.text, resp.response.status_code)
-        return resp.response.json()
+        req = grequests.get('%s/_status' % cls.server, verify=cls.verify)
+        resp = req.send(stream=False).response
+        if not resp.ok:
+            raise HttpError(resp.text, resp.status_code)
+        return resp.json()
