@@ -2,7 +2,6 @@
 
 import os
 import yaml
-import requests
 import grequests
 from contextlib import contextmanager
 
