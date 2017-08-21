@@ -151,11 +151,11 @@ class PastryClient(object):
             kwargs['json'] = data
 
         resp = {
-            'GET': requests.get,
-            'POST': requests.post,
-            'PUT': requests.put,
-            'DELETE': requests.delete
-        }[method]('%s%s' % (server, path), session=cls.session, **kwargs)
+            'GET': cls.session.get,
+            'POST': cls.session.post,
+            'PUT': cls.session.put,
+            'DELETE': cls.session.delete
+        }[method]('%s%s' % (server, path), **kwargs)
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
         return resp.json()
@@ -168,9 +168,8 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        resp = requests.get(
+        resp = cls.session.get(
             '%s/_status' % cls.server,
-            session=cls.session,
             verify=cls.verify,
             headers={'Connection': 'close'}
         )

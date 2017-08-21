@@ -57,44 +57,41 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual((None, 'endpoint'), PastryClient.get_url('endpoint'))
 
     @mock.patch('pastry.pastry_client.signed_headers')
-    @mock.patch('pastry.pastry_client.requests')
+    @mock.patch('pastry.pastry_client.PastryClient.session')
     @mock.patch('pastry.pastry_client.PastryClient.get_url')
-    def test_call(self, get_url, requests, signed_headers):
+    def test_call(self, get_url, session, signed_headers):
         get_url.return_value = ('server', 'path')
         signed_headers.return_value = {'signed': True}
         response = mock.MagicMock()
         response.ok = True
-        requests.get.return_value = response
-        requests.post.return_value = response
+        session.get.return_value = response
+        session.post.return_value = response
         PastryClient.call('endpoint')
-        requests.get.assert_called_with(
+        session.get.assert_called_with(
             'serverpath',
             headers={'signed': True, 'Connection': 'close'},
-            session=PastryClient.session,
             verify=PastryClient.verify
         )
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
-        requests.post.assert_called_with(
+        session.post.assert_called_with(
             'serverpath',
             headers={'signed': True, 'Connection': 'close'},
             json={'key': 'value'},
-            session=PastryClient.session,
             verify=PastryClient.verify
         )
         response.ok = False
         self.assertRaises(Exception, PastryClient.call, 'endpoint')
 
-    @mock.patch('pastry.pastry_client.requests')
+    @mock.patch('pastry.pastry_client.PastryClient.session')
     def test_status(self, requests):
         resp = mock.MagicMock()
         resp.ok = True
         resp.json.return_value = {'json': 'content'}
-        requests.get.return_value = resp
+        session.get.return_value = resp
         self.assertEqual(PastryClient.status(), resp.json())
-        requests.get.assert_called_with(
+        session.get.assert_called_with(
             '%s/_status' % PastryClient.server,
             headers={'Connection': 'close'},
-            session=PastryClient.session,
             verify=PastryClient.verify
         )
         resp.ok = False
