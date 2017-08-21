@@ -3,7 +3,6 @@
 import os
 import yaml
 import requests
-import grequests
 from contextlib import contextmanager
 
 from pastry.utils.auth import signed_headers
@@ -151,13 +150,12 @@ class PastryClient(object):
         if data:
             kwargs['json'] = data
 
-        req = {
-            'GET': grequests.get,
-            'POST': grequests.post,
-            'PUT': grequests.put,
-            'DELETE': grequests.delete
+        resp = {
+            'GET': requests.get,
+            'POST': requests.post,
+            'PUT': requests.put,
+            'DELETE': requests.delete
         }[method]('%s%s' % (server, path), session=cls.session, **kwargs)
-        resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
         return resp.json()
@@ -170,13 +168,12 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        req = grequests.get(
+        resp = requests.get(
             '%s/_status' % cls.server,
             session=cls.session,
             verify=cls.verify,
             headers={'Connection': 'close'}
         )
-        resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
         return resp.json()
