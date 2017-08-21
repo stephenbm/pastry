@@ -12,16 +12,15 @@ class PastryClientTestCase(unittest.TestCase):
         PastryClient.organization = None
         PastryClient.client = None
         PastryClient.keypath = None
-        PastryClient.session = 'Session'
+        PastryClient.session = mock.MagicMock()
 
-    @mock.patch('pastry.pastry_client.requests.Session', return_value='Session')
+    @mock.patch('pastry.pastry_client.requests.Session')
     def test_initialize(self, session):
         PastryClient.initialize('server', 'organization', 'client', 'keypath', 'verify')
         self.assertEqual(PastryClient.server, 'server')
         self.assertEqual(PastryClient.organization, 'organization')
         self.assertEqual(PastryClient.client, 'client')
         self.assertEqual(PastryClient.keypath, 'keypath')
-        self.assertEqual(PastryClient.session, 'Session')
         self.assertEqual(PastryClient.verify, 'verify')
 
     @mock.patch('pastry.pastry_client.PastryClient.load_config')
@@ -73,7 +72,7 @@ class PastryClientTestCase(unittest.TestCase):
         grequests.get.assert_called_with(
             'serverpath',
             headers={'signed': True, 'Connection': 'close'},
-            session='Session',
+            session=PastryClient.session,
             verify=PastryClient.verify
         )
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
@@ -81,7 +80,7 @@ class PastryClientTestCase(unittest.TestCase):
             'serverpath',
             headers={'signed': True, 'Connection': 'close'},
             json={'key': 'value'},
-            session='Session',
+            session=PastryClient.session,
             verify=PastryClient.verify
         )
         response.ok = False
@@ -99,7 +98,7 @@ class PastryClientTestCase(unittest.TestCase):
         requests.get.assert_called_with(
             '%s/_status' % PastryClient.server,
             headers={'Connection': 'close'},
-            session='Session',
+            session=PastryClient.session,
             verify=PastryClient.verify
         )
         resp.ok = False

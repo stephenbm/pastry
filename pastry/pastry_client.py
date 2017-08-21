@@ -46,6 +46,10 @@ class PastryClient(object):
         cls.keypath = keypath
         cls.verify = verify
         cls.session = requests.Session()
+        cls.session.mount(cls.server, requests.adapters.HTTPAdapter(
+            pool_connections=50,
+            pool_maxsize=50
+        ))
         cls.initialized = True
 
     @classmethod
