@@ -12,14 +12,16 @@ class PastryClientTestCase(unittest.TestCase):
         PastryClient.organization = None
         PastryClient.client = None
         PastryClient.keypath = None
-        PastryClient._session = mock.MagicMock()
+        PastryClient.session = 'Session'
 
-    def test_initialize(self):
+    @mock.patch('pastry.pastry_client.requests.Session', return_value='Session')
+    def test_initialize(self, session):
         PastryClient.initialize('server', 'organization', 'client', 'keypath', 'verify')
         self.assertEqual(PastryClient.server, 'server')
         self.assertEqual(PastryClient.organization, 'organization')
         self.assertEqual(PastryClient.client, 'client')
         self.assertEqual(PastryClient.keypath, 'keypath')
+        self.assertEqual(PastryClient.session, 'Session')
         self.assertEqual(PastryClient.verify, 'verify')
 
     @mock.patch('pastry.pastry_client.PastryClient.load_config')
@@ -60,7 +62,7 @@ class PastryClientTestCase(unittest.TestCase):
     @mock.patch('pastry.pastry_client.PastryClient.get_url')
     def test_call(self, get_url, grequests, signed_headers):
         get_url.return_value = ('server', 'path')
-        signed_headers.return_value = 'headers'
+        signed_headers.return_value = {'signed': True}
         response = mock.MagicMock()
         response.response = response
         response.ok = True
@@ -68,12 +70,18 @@ class PastryClientTestCase(unittest.TestCase):
         grequests.get.return_value = response
         grequests.post.return_value = response
         PastryClient.call('endpoint')
-        grequests.get.assert_called_with('serverpath', headers='headers', verify=PastryClient.verify)
+        grequests.get.assert_called_with(
+            'serverpath',
+            headers={'signed': True, 'Connection': 'close'},
+            session='Session',
+            verify=PastryClient.verify
+        )
         PastryClient.call('endpoint', method='POST', data={'key': 'value'})
         grequests.post.assert_called_with(
             'serverpath',
-            headers='headers',
+            headers={'signed': True, 'Connection': 'close'},
             json={'key': 'value'},
+            session='Session',
             verify=PastryClient.verify
         )
         response.ok = False
@@ -88,6 +96,11 @@ class PastryClientTestCase(unittest.TestCase):
         resp.send.return_value = resp
         requests.get.return_value = resp
         self.assertEqual(PastryClient.status(), resp.json())
-        requests.get.assert_called_with('%s/_status' % PastryClient.server, verify=PastryClient.verify)
+        requests.get.assert_called_with(
+            '%s/_status' % PastryClient.server,
+            headers={'Connection': 'close'},
+            session='Session',
+            verify=PastryClient.verify
+        )
         resp.ok = False
         self.assertRaises(Exception, PastryClient.status)

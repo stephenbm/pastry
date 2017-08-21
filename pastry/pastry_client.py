@@ -2,6 +2,7 @@
 
 import os
 import yaml
+import requests
 import grequests
 from contextlib import contextmanager
 
@@ -20,6 +21,7 @@ class PastryClient(object):
     client = None
     keypath = None
     verify = None
+    session = None
     initialized = False
 
     @classmethod
@@ -43,6 +45,7 @@ class PastryClient(object):
         cls.client = client
         cls.keypath = keypath
         cls.verify = verify
+        cls.session = requests.Session()
         cls.initialized = True
 
     @classmethod
@@ -136,9 +139,10 @@ class PastryClient(object):
             method=method,
             data=data
         )
+        headers['Connection'] = 'close'
         kwargs = {
             'headers': headers,
-            'verify': cls.verify
+            'verify': cls.verify,
         }
         if data:
             kwargs['json'] = data
@@ -148,11 +152,10 @@ class PastryClient(object):
             'POST': grequests.post,
             'PUT': grequests.put,
             'DELETE': grequests.delete
-        }[method]('%s%s' % (server, path), **kwargs)
+        }[method]('%s%s' % (server, path), session=cls.session, **kwargs)
         resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
-        resp.close()
         return resp.json()
 
     @classmethod
@@ -163,9 +166,13 @@ class PastryClient(object):
         :return: The json response form the server
         :type: hash
         '''
-        req = grequests.get('%s/_status' % cls.server, verify=cls.verify)
+        req = grequests.get(
+            '%s/_status' % cls.server,
+            session=cls.session,
+            verify=cls.verify,
+            headers={'Connection': 'close'}
+        )
         resp = req.send(stream=False).response
         if not resp.ok:
             raise HttpError(resp.text, resp.status_code)
-        resp.close()
         return resp.json()
