@@ -14,7 +14,7 @@ class Base(object):
     @classmethod
     def base_url(cls):
         '''
-        Get the base url for this resaource - raise a ValueError if the
+        Get the base url for this resource - raise a ValueError if the
         child class has not set it's url
         '''
         if not cls._base_url:

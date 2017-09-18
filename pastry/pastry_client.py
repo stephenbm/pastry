@@ -3,6 +3,7 @@
 import os
 import yaml
 import requests
+import threading
 from contextlib import contextmanager
 
 from pastry.utils.auth import signed_headers
@@ -53,12 +54,15 @@ class PastryClient(object):
 
     @classmethod
     @contextmanager
-    def context(cls, organization=organization):
+    def context(cls, organization=None):
         '''
         Context manager to override the default org
 
         :param organization: The name of the org to use for the command
         :type organization: string
+
+        .. note::
+            org is temporarily stored in current_thread()._pastry_org
 
         .. code-block::
 
@@ -67,10 +71,9 @@ class PastryClient(object):
         '''
         if not cls.initialized:
             cls.load_config()
-        default_org = cls.organization
-        cls.organization = organization
+        threading.current_thread()._pastry_org = organization
         yield
-        cls.organization = default_org
+        del threading.current_thread()._pastry_org
 
     @classmethod
     def load_config(cls, config_path=None):
@@ -118,7 +121,8 @@ class PastryClient(object):
         '''
         if not cls.initialized:
             cls.load_config()
-        return cls.server, (endpoint % {'org': cls.organization})
+        org = getattr(threading.current_thread(), '_pastry_org', cls.organization)
+        return cls.server, (endpoint % {'org': org})
 
     @classmethod
     def call(cls, endpoint, method='GET', data=None):

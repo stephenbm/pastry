@@ -23,12 +23,13 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertEqual(PastryClient.keypath, 'keypath')
         self.assertEqual(PastryClient.verify, 'verify')
 
+    @mock.patch('pastry.pastry_client.threading.current_thread')
     @mock.patch('pastry.pastry_client.PastryClient.load_config')
-    def test_organization(self, load_config):
+    def test_organization(self, load_config, thread):
         current = PastryClient.organization
         PastryClient.initialized = False
         with PastryClient.context(organization='org'):
-            self.assertEqual(PastryClient.organization, 'org')
+            self.assertEqual(thread()._pastry_org, 'org')
         self.assertEqual(PastryClient.organization, current)
         self.assertEqual(load_config.call_count, 1)
 
@@ -83,7 +84,7 @@ class PastryClientTestCase(unittest.TestCase):
         self.assertRaises(Exception, PastryClient.call, 'endpoint')
 
     @mock.patch('pastry.pastry_client.PastryClient.session')
-    def test_status(self, requests):
+    def test_status(self, session):
         resp = mock.MagicMock()
         resp.ok = True
         resp.json.return_value = {'json': 'content'}
