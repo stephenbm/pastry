@@ -1,5 +1,6 @@
 '''exceptions for pastry events'''
 
+
 class HttpError(Exception):
     '''
     Exception calling http request -adds teh ststus code)

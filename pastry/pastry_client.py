@@ -121,7 +121,8 @@ class PastryClient(object):
         '''
         if not cls.initialized:
             cls.load_config()
-        org = getattr(threading.current_thread(), '_pastry_org', cls.organization)
+        org = getattr(
+            threading.current_thread(), '_pastry_org', cls.organization)
         return cls.server, (endpoint % {'org': org})
 
     @classmethod

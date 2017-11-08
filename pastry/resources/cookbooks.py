@@ -47,7 +47,8 @@ class Cookbooks(Base):
         :return: All of the files the cookbook knows about
         :rtype: hash
         '''
-        return PastryClient.call('%s/%s/%s' % (cls.base_url(), cookbook, version))
+        return PastryClient.call(
+            '%s/%s/%s' % (cls.base_url(), cookbook, version))
 
     @classmethod
     def parse_filename(cls, filename):
@@ -81,8 +82,10 @@ class Cookbooks(Base):
         file_type, specificity, name = cls.parse_filename(filename)
         files = cls.contents(cookbook, version=version)
         for file_info in files[file_type]:
-            if name == file_info['name'] and specificity == file_info['specificity']:
-                resp = requests.get(file_info['url'], verify=PastryClient.verify)
+            if name == file_info['name'] and \
+                    specificity == file_info['specificity']:
+                resp = requests.get(
+                    file_info['url'], verify=PastryClient.verify)
                 if not resp.ok:
                     raise HttpError(resp.text, resp.status_code)
                 return resp.text

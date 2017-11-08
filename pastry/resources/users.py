@@ -107,7 +107,7 @@ class Users(Base):
         :rtype: boolean
         '''
         return PastryClient.call(
-            'organizations/%s/association_requests' % orgname,
+            '/organizations/%s/association_requests' % orgname,
             method='POST',
             data={'user': username}
         )
