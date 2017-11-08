@@ -34,7 +34,7 @@ class UsersTestCase(unittest.TestCase):
     def test_invite(self, call):
         self.assertEqual(Users.invite('user', 'org'), True)
         call.assert_called_with(
-            'organizations/org/association_requests',
+            '/organizations/org/association_requests',
             method='POST',
             data={'user': 'user'}
         )
